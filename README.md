@@ -4,7 +4,8 @@ Command line app to search users and tickets <br/>
 
 ## Prerequisites
 
-- [Go 1.14](https://golang.org)
+- [Go 1.16.6](https://golang.org)
+- [GVM - Go Version Manager](https://github.com/moovweb/gvm) - Optional
 
 ## Common commands
 
