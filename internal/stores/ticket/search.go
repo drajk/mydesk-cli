@@ -26,7 +26,7 @@ func (u *storeParams) SearchByType(ticketType string) []Ticket {
 
 func (u *storeParams) SearchBySubject(subject string) []Ticket {
 	return filter(u.tickets, u.searchLimit, func(item Ticket) bool {
-		return strings.Contains(item.Type, subject)
+		return strings.Contains(item.Subject, subject)
 	})
 }
 

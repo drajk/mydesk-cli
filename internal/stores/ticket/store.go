@@ -18,10 +18,10 @@ type Ticket struct {
 
 type IStore interface {
 	SearchById(string) []Ticket
-	SearchByAssigneeId(int) []Ticket
 	SearchByType(string) []Ticket
 	SearchBySubject(string) []Ticket
 	SearchByTag(string) []Ticket
+	SearchByAssigneeId(int) []Ticket
 }
 
 type storeParams struct {
