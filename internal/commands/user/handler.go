@@ -3,12 +3,16 @@ package user
 import (
 	"errors"
 	"fmt"
+	"strings"
 
+	storeTickets "github.com/drajk/mydesk-cli/internal/stores/ticket"
 	storeUser "github.com/drajk/mydesk-cli/internal/stores/user"
+
+	"github.com/drajk/mydesk-cli/pkg/format"
 	"github.com/urfave/cli/v2"
 )
 
-func handle(userStore storeUser.IStore) func(c *cli.Context) error {
+func handle(userStore storeUser.IStore, ticketStore storeTickets.IStore) func(c *cli.Context) error {
 	return func(c *cli.Context) (err error) {
 		var searchResult []storeUser.User
 
@@ -37,14 +41,26 @@ func handle(userStore storeUser.IStore) func(c *cli.Context) error {
 		fmt.Println("Displaying first 10 results")
 
 		for _, user := range searchResult {
-			fmt.Println()
+			matchingTickets := ticketStore.SearchByAssigneeId(user.Id)
 
-			fmt.Printf("_id: \t %v \n", user.Id)
-			fmt.Printf("name: \t %v \n", user.Name)
-			fmt.Printf("verified: \t %v \n", user.IsVerified)
-			fmt.Printf("created_at: \t %v \n", user.CreatedAt.Format("2006-01-02T15:04:05"))
+			var assignedTickets []string
+			for _, ticket := range matchingTickets {
+				assignedTickets = append(assignedTickets, ticket.Subject)
+			}
 
-			fmt.Println()
+			formatted, err := format.ToIndentedKeyValue(
+				"Id", fmt.Sprint(user.Id),
+				"Name", user.Name,
+				"Verified", fmt.Sprint(user.IsVerified),
+				"CreatedAt", fmt.Sprint(user.CreatedAt),
+				"Tickets", strings.Join(assignedTickets, ", "),
+			)
+
+			if err != nil {
+				return err
+			}
+
+			fmt.Print(formatted)
 		}
 
 		return

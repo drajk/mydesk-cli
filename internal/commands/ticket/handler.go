@@ -3,12 +3,16 @@ package ticket
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	storeTickets "github.com/drajk/mydesk-cli/internal/stores/ticket"
+	storeUser "github.com/drajk/mydesk-cli/internal/stores/user"
+
+	"github.com/drajk/mydesk-cli/pkg/format"
 	"github.com/urfave/cli/v2"
 )
 
-func handle(ticketStore storeTickets.IStore) func(c *cli.Context) error {
+func handle(userStore storeUser.IStore, ticketStore storeTickets.IStore) func(c *cli.Context) error {
 	return func(c *cli.Context) (err error) {
 		var searchResult []storeTickets.Ticket
 
@@ -52,16 +56,27 @@ func handle(ticketStore storeTickets.IStore) func(c *cli.Context) error {
 		fmt.Println("Displaying first 10 results")
 
 		for _, ticket := range searchResult {
-			fmt.Println()
+			matchingUsers := userStore.SearchById(ticket.AssigneeId)
 
-			fmt.Printf("_id: \t %v \n", ticket.Id)
-			fmt.Printf("assignee_id: \t %v \n", ticket.AssigneeId)
-			fmt.Printf("type: \t %v \n", ticket.Type)
-			fmt.Printf("subject: \t %v \n", ticket.Subject)
-			fmt.Printf("tags: \t %v \n", ticket.Tags)
-			fmt.Printf("created_at: \t %v \n", ticket.CreatedAt.Format("2006-01-02T15:04:05"))
+			assigneeName := ""
+			if len(matchingUsers) > 0 {
+				assigneeName = matchingUsers[0].Name
+			}
 
-			fmt.Println()
+			formatted, err := format.ToIndentedKeyValue(
+				"Id", ticket.Id,
+				"Type", ticket.Type,
+				"Subject", ticket.Subject,
+				"Tags", strings.Join(ticket.Tags, ", "),
+				"Assignee Id", fmt.Sprint(ticket.AssigneeId),
+				"Assignee Name", assigneeName,
+			)
+
+			if err != nil {
+				return err
+			}
+
+			fmt.Print(formatted)
 		}
 
 		return

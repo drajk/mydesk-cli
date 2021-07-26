@@ -2,10 +2,12 @@ package ticket
 
 import (
 	ticketStore "github.com/drajk/mydesk-cli/internal/stores/ticket"
+	userStore "github.com/drajk/mydesk-cli/internal/stores/user"
 	"github.com/urfave/cli/v2"
 )
 
 type container interface {
+	UserStore() userStore.IStore
 	TicketStore() ticketStore.IStore
 }
 
@@ -27,7 +29,7 @@ func Command(c container) *cli.Command {
 		Name:   Name,
 		Usage:  Usage,
 		Flags:  Flags(),
-		Action: handle(c.TicketStore()),
+		Action: handle(c.UserStore(), c.TicketStore()),
 	}
 }
 

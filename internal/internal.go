@@ -12,8 +12,8 @@ func Start() {
 
 	app := config.
 		NewApp().
-		WithCommands(user.Command(container)).
-		WithCommands(ticket.Command(container))
+		WithCommand(user.Command(container)).
+		WithCommand(ticket.Command(container))
 
 	app.Start()
 }
