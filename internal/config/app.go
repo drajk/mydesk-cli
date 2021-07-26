@@ -18,11 +18,11 @@ func NewApp() *App {
 	}
 }
 
-func (s *App) Start() {
+func (a *App) Start() {
 	app := &cli.App{
 		Name:                 ServiceName,
 		UsageText:            InfoUsage,
-		Commands:             s.commands,
+		Commands:             a.commands,
 		EnableBashCompletion: true,
 	}
 
