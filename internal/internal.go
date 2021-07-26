@@ -1,12 +1,19 @@
 package internal
 
 import (
-	"fmt"
-
+	"github.com/drajk/mydesk-cli/internal/commands/ticket"
+	"github.com/drajk/mydesk-cli/internal/commands/user"
 	"github.com/drajk/mydesk-cli/internal/config"
 )
 
-//Start starts the cli with given configuration
-func Start(container config.IContainer) {
-	fmt.Println("Hello, " + container.ServiceName() + "!")
+//Start - creates app container and starts the app
+func Start() {
+	container := config.NewContainer(config.ServiceName)
+
+	app := config.
+		NewApp().
+		WithCommands(user.Command(container)).
+		WithCommands(ticket.Command(container))
+
+	app.Start()
 }
