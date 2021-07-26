@@ -9,8 +9,6 @@ Command line app to search users and tickets <br/>
 
 ## Common commands
 
-These commands will require [CNP Secure Pipeline](https://github.latitudefinancial.com/Latitude/cnp-secure-pipeline) to be installed.
-
 Run unit tests - `make test`
 
 Format the code - `make format`
