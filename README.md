@@ -22,10 +22,24 @@ Build the service - `make build`
 ## Project Structure
 
 - [internal](./internal) - internal go packages that are specific to this service and are non exportable.
+- [internal/config](./internal/config) - cli setup related functions, constants and helpers.
+- [internal/commands](./internal/commands) - commands and handlers.
+- [internal/stores](./internal/stores) - user and ticket stores, read from local JSON files and can be extended.
 - [pkg](./pkg) - exportable/sharable packages that the service exposes (if needed).
 - [mocks](./mocks) - mock files required for cli or unit tests
 
-## Debug using Visual Studio Code
+## Sample CLI Usage
+
+To be used with `mydesk-cli` once built or `go run main.go` 
+
+- `user --id 3`
+- `user --id 3`
+- `user --name "Francisca Rasmussen"`
+- `ticket --id "2614576f-98fb-4031-9e13-beca7a6a73ee"`
+- `ticket --type "question"`
+- `ticket --tag "Wisconsin"`
+
+## Optional - Debug using Visual Studio Code
 
 1. Install `Go` extention.
 2. Open `Command Palette` > select `Go: Install/Update Tools` > select `dlv` and click on `OK`.

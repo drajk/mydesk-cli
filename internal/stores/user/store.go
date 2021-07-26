@@ -37,3 +37,10 @@ func NewStore(filePath string, searchLimit int) IStore {
 		searchLimit: searchLimit,
 	}
 }
+
+func NewMockStore(data []User, searchLimit int) IStore {
+	return &storeParams{
+		users:       data,
+		searchLimit: searchLimit,
+	}
+}
