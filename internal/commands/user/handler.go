@@ -48,17 +48,13 @@ func handle(userStore storeUser.IStore, ticketStore storeTickets.IStore) func(c 
 				assignedTickets = append(assignedTickets, ticket.Subject)
 			}
 
-			formatted, err := format.ToIndentedKeyValue(
+			formatted := format.ToIndentedKeyValue(
 				"Id", fmt.Sprint(user.Id),
 				"Name", user.Name,
 				"Verified", fmt.Sprint(user.IsVerified),
 				"CreatedAt", fmt.Sprint(user.CreatedAt),
 				"Tickets", strings.Join(assignedTickets, ", "),
 			)
-
-			if err != nil {
-				return err
-			}
 
 			fmt.Print(formatted)
 		}

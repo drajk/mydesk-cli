@@ -63,7 +63,7 @@ func handle(userStore storeUser.IStore, ticketStore storeTickets.IStore) func(c 
 				assigneeName = matchingUsers[0].Name
 			}
 
-			formatted, err := format.ToIndentedKeyValue(
+			formatted := format.ToIndentedKeyValue(
 				"Id", ticket.Id,
 				"Type", ticket.Type,
 				"Subject", ticket.Subject,
@@ -71,10 +71,6 @@ func handle(userStore storeUser.IStore, ticketStore storeTickets.IStore) func(c 
 				"Assignee Id", fmt.Sprint(ticket.AssigneeId),
 				"Assignee Name", assigneeName,
 			)
-
-			if err != nil {
-				return err
-			}
 
 			fmt.Print(formatted)
 		}
